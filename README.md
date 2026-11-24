@@ -1,4 +1,4 @@
-# The Selosh Shop
+# Selosh Soulpath
 
 Mockup van een luxe webshop voor haarproducten en astrologie- en horoscoopproducten.
 
