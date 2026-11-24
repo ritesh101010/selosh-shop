@@ -135,6 +135,23 @@ h2{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4vw,48px);line-
 .sign:hover b,.sign:hover span,.sign[aria-pressed="true"] b,.sign[aria-pressed="true"] span{color:var(--night)}
 .zodiac .note{margin:20px 0 0;color:#E9DDF0;font-size:15px;min-height:24px}
 
+/* coaching */
+.coach{background:var(--plum);color:#fff}
+.coach .eyebrow{color:var(--pink)}
+.coach h2{color:#fff;font-size:clamp(38px,4.6vw,58px)}
+.coach h2 i{color:var(--gold);display:block}
+.coach-in{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.coach-lead{color:#E9DDF0;font-size:18px;margin:18px 0 30px;max-width:440px}
+.coach-note{color:#BFAFCB;font-size:14px;margin:14px 0 0}
+.portrait{aspect-ratio:4/5;border-radius:200px 200px 24px 24px;background:#E9E1F0;color:#3A2A52;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;position:relative;overflow:hidden}
+.portrait svg{width:72px;height:72px;color:var(--gold-ink)}
+.portrait span{font-size:14px;letter-spacing:.16em;text-transform:uppercase}
+.steps{list-style:none;padding:0;margin:64px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;counter-reset:st}
+.steps li{border-top:1px solid rgba(217,178,106,.45);padding-top:20px;counter-increment:st}
+.steps li::before{content:counter(st);font-family:var(--serif);font-size:44px;line-height:1;color:var(--gold);display:block;margin-bottom:10px}
+.steps b{font-family:var(--serif);font-weight:500;font-size:26px;display:block}
+.steps span{color:#E9DDF0;font-size:15px}
+
 /* usp + footer */
 .usp{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:40px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .usp div{display:flex;gap:14px;align-items:center;font-size:15px}
@@ -176,6 +193,9 @@ footer a:hover{color:#fff}
   .head{flex-direction:column;align-items:start}
   .usp{grid-template-columns:1fr}
   section{padding:64px 0}
+  .coach-in{grid-template-columns:1fr;gap:36px}
+  .portrait{max-width:320px;width:100%;margin:0 auto}
+  .steps{grid-template-columns:1fr;margin-top:44px}
   .signs{grid-template-columns:repeat(4,1fr)}
 }
 @media (prefers-reduced-motion:reduce){
@@ -195,6 +215,7 @@ footer a:hover{color:#fff}
       <a href="#haar">Haarproducten</a>
       <a href="#astro">Astrologie &amp; horoscoop</a>
       <a href="#sterrenbeeld">Shop per sterrenbeeld</a>
+      <a href="#coaching">Coaching</a>
     </nav>
     <div class="icons">
       <button class="ic" aria-label="Zoeken"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
@@ -219,6 +240,7 @@ footer a:hover{color:#fff}
       <div class="cta">
         <a class="btn btn-pink" href="#haar">Shop voor mijn haar</a>
         <a class="btn btn-ghost" href="#astro">Shop voor mijn droomleven</a>
+        <a class="btn btn-ghost" href="#coaching">Vind mijn balans</a>
       </div>
     </div>
   </div>
@@ -273,6 +295,29 @@ footer a:hover{color:#fff}
   </div>
 </section>
 
+<section id="coaching" class="coach dark" aria-labelledby="coach-title">
+  <div class="wrap">
+    <div class="coach-in">
+      <div>
+        <p class="eyebrow">Inspiratiecoaching</p>
+        <h2 id="coach-title">Na het samen, <i>weer helemaal jij</i></h2>
+        <p class="coach-lead">Je balans en innerlijke rust terugvinden na een scheiding. In je eigen tempo, met iemand die naast je staat.</p>
+        <a class="btn btn-pink" href="#coaching">Plan een gratis kennismaking</a>
+        <p class="coach-note">30 minuten, online, vrijblijvend.</p>
+      </div>
+      <div class="portrait" role="img" aria-label="Plek voor een portretfoto van de coach">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M30 8a16 16 0 1 0 10 28A14 14 0 0 1 30 8z"/><path d="m36 12 1 3 3 1-3 1-1 3-1-3-3-1 3-1z"/></svg>
+        <span>Foto van de coach</span>
+      </div>
+    </div>
+    <ol class="steps">
+      <li><b>Loslaten</b><span>Ruimte voor wat was</span></li>
+      <li><b>Herontdekken</b><span>Wie ben jij nu?</span></li>
+      <li><b>Innerpeace</b><span>Rust en een nieuwe koers</span></li>
+    </ol>
+  </div>
+</section>
+
 <div class="wrap">
   <div class="usp">
     <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/></svg>Gratis verzending vanaf €50</div>
@@ -286,7 +331,7 @@ footer a:hover{color:#fff}
   <div class="wrap">
     <div class="foot">
       <div><a class="logo" href="#">The <i style="color:var(--pink)">Selosh</i> Shop</a><p style="max-width:280px">Luxe haarverzorging en kosmische musthaves.</p></div>
-      <div><h4>Shop</h4><ul><li><a href="#haar">Haarproducten</a></li><li><a href="#astro">Astrologie &amp; horoscoop</a></li><li><a href="#sterrenbeeld">Per sterrenbeeld</a></li></ul></div>
+      <div><h4>Shop</h4><ul><li><a href="#haar">Haarproducten</a></li><li><a href="#astro">Astrologie &amp; horoscoop</a></li><li><a href="#sterrenbeeld">Per sterrenbeeld</a></li><li><a href="#coaching">Coaching</a></li></ul></div>
       <div><h4>Service</h4><ul><li><a href="#">Verzenden</a></li><li><a href="#">Retourneren</a></li><li><a href="#">Contact</a></li></ul></div>
       <div><h4>Volg ons</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li><li><a href="#">Pinterest</a></li></ul></div>
     </div>
