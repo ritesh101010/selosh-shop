@@ -39,13 +39,14 @@ header{background:var(--cream);border-bottom:1px solid var(--line);position:stic
 
 /* hero */
 .hero{background:var(--night);color:#fff;position:relative;overflow:hidden}
-.hero-in{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:560px;position:relative}
-.hero-copy{position:relative;z-index:2;max-width:600px}
+.hero-in{display:grid;grid-template-columns:1.3fr .7fr;align-items:center;min-height:560px;position:relative}
+.hero-copy{position:relative;z-index:2;max-width:640px}
 .kicker{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--pink)}
 .hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(40px,5vw,66px);line-height:1;margin:14px 0 18px}
 .hero h1 i{color:var(--gold);display:block}
 .hero p{color:#E9DDF0;font-size:18px;margin:0 0 30px;max-width:400px}
 .cta{display:flex;gap:12px;flex-wrap:wrap}
+@media (min-width:961px){.cta{flex-wrap:nowrap}.cta .btn{white-space:nowrap}}
 .btn{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:999px;font-size:15px;font-weight:500;border:1px solid transparent}
 .btn-pink{background:var(--pink);color:var(--night)}
 .btn-pink:hover{background:#fff}
@@ -167,6 +168,7 @@ footer a:hover{color:#fff}
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--ink);color:var(--cream);padding:12px 20px;border-radius:999px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:50}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 
+@media (min-width:961px) and (max-width:1199px){#wheel{width:520px;height:520px;right:-140px}}
 @media (max-width:960px){
   .menu{display:none}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -235,7 +237,7 @@ footer a:hover{color:#fff}
   <div class="wrap hero-in">
     <div class="hero-copy">
       <div class="kicker">The Selosh Shop</div>
-      <h1 id="hero-title">Luxe haar&shy;verzorging, <i>zoals geschreven in de sterren</i></h1>
+      <h1 id="hero-title">De beste versie van mezelf, <i>zoals geschreven in de sterren</i></h1>
       <p>Haarproducten met glow en kosmische musthaves voor elk sterrenbeeld.</p>
       <div class="cta">
         <a class="btn btn-pink" href="#haar">Shop voor mijn haar</a>
