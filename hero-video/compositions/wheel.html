@@ -1,0 +1,143 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; background: var(--ground, #160C28); overflow: hidden; }
+    #wheel-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  </style>
+  <div id="root" data-composition-id="wheel" data-width="1080" data-height="1080">
+    <svg id="wheel-svg" class="clip" data-start="0" data-duration="20" viewBox="0 0 640 640" data-layout-ignore>
+      <defs>
+        <radialGradient id="wheel-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#F4A8C8" stop-opacity="0.55" />
+          <stop offset="35%" stop-color="#E8458B" stop-opacity="0.18" />
+          <stop offset="70%" stop-color="#7A4FB5" stop-opacity="0.08" />
+          <stop offset="100%" stop-color="#160C28" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="wheel-glint" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="1" />
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+        </radialGradient>
+      </defs>
+      <g id="wheel-stars"></g>
+      <circle id="wheel-halo" cx="320" cy="320" r="250" fill="url(#wheel-glow)" />
+      <g id="wheel-outer"></g>
+      <g id="wheel-inner"></g>
+      <g id="wheel-core">
+        <circle cx="320" cy="320" r="46" fill="#F4C6D8" fill-opacity="0.12" />
+        <path id="wheel-star" d="M320 288 l8 22 l24 1 l-19 15 l7 23 l-20 -14 l-20 14 l7 -23 l-19 -15 l24 -1z" fill="#F4C6D8" />
+      </g>
+      <g id="wheel-glints"></g>
+    </svg>
+  </div>
+  <script>
+    (function () {
+      const T = 20, cx = 320, cy = 320, GOLD = "#D9B26A", PINK = "#F4C6D8";
+      const NS = "http://www.w3.org/2000/svg";
+      const root = document.querySelector('[data-composition-id="wheel"]');
+      const $ = (s) => root.querySelector(s);
+      const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+      let seed = 23; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+      // sterrenbeelden (punten + lijnen)
+      const C = [
+        { p: [[20,0],[0,15],[42,13],[14,48],[22,50],[30,52],[6,90],[44,88]], l: [[0,1],[0,2],[1,3],[2,5],[3,4],[4,5],[3,6],[5,7]] },
+        { p: [[0,10],[22,32],[44,14],[64,36],[90,18]], l: [[0,1],[1,2],[2,3],[3,4]] },
+        { p: [[0,40],[18,20],[34,10],[50,16],[44,34],[60,50],[95,46],[80,28]], l: [[0,1],[1,2],[2,3],[3,4],[4,0],[4,5],[5,6],[6,7],[7,4]] },
+        { p: [[0,0],[14,12],[24,28],[30,48],[40,64],[56,72],[72,68],[80,54],[70,46]], l: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]] },
+        { p: [[0,0],[30,4],[4,30],[32,34],[8,64],[36,66]], l: [[0,2],[2,4],[1,3],[3,5],[2,3]] },
+        { p: [[0,0],[24,30],[40,40],[56,30],[80,0],[44,60]], l: [[0,1],[1,2],[2,3],[3,4],[2,5]] },
+      ];
+
+      // sterrenhemel achter de kaart
+      const stars = $("#wheel-stars");
+      const twinkles = [];
+      for (let i = 0; i < 140; i++) {
+        const s = el("circle", { cx: (rnd() * 640).toFixed(1), cy: (rnd() * 640).toFixed(1), r: (rnd() * 1.1 + 0.3).toFixed(2), fill: "#FFFFFF", opacity: 0.6 }, stars);
+        twinkles.push(s);
+      }
+
+      // buitenring
+      const outer = $("#wheel-outer");
+      el("circle", { cx, cy, r: 300, fill: "none", stroke: GOLD, "stroke-width": 1.2 }, outer);
+      el("circle", { cx, cy, r: 292, fill: "none", stroke: GOLD, "stroke-width": 0.5, opacity: 0.5 }, outer);
+      el("circle", { cx, cy, r: 226, fill: "none", stroke: GOLD, "stroke-width": 0.8, opacity: 0.7 }, outer);
+      for (let i = 0; i < 72; i++) {
+        const a = (i * 5 * Math.PI) / 180, len = i % 6 ? 6 : 12;
+        el("line", { x1: cx + 300 * Math.cos(a), y1: cy + 300 * Math.sin(a), x2: cx + (300 - len) * Math.cos(a), y2: cy + (300 - len) * Math.sin(a), stroke: GOLD, "stroke-width": 0.8, opacity: 0.8 }, outer);
+      }
+      const byType = [[], [], [], [], [], []];
+      for (let i = 0; i < 12; i++) {
+        const a = (i * 30 * Math.PI) / 180;
+        el("line", { x1: cx + 226 * Math.cos(a), y1: cy + 226 * Math.sin(a), x2: cx + 292 * Math.cos(a), y2: cy + 292 * Math.sin(a), stroke: GOLD, "stroke-width": 0.8, opacity: 0.6 }, outer);
+        const b = a + (15 * Math.PI) / 180, c = C[i % 6], s = 0.46;
+        const xs = c.p.map((q) => q[0]), ys = c.p.map((q) => q[1]);
+        const mx = (Math.min(...xs) + Math.max(...xs)) / 2, my = (Math.min(...ys) + Math.max(...ys)) / 2;
+        const g = el("g", { transform: `translate(${cx + 260 * Math.cos(b) - mx * s},${cy + 260 * Math.sin(b) - my * s}) scale(${s})` }, outer);
+        const faint = el("g", { opacity: 0.28 }, g);
+        const lit = el("g", {}, g);
+        const dots = el("g", { opacity: 0.55 }, g);
+        c.l.forEach(([p, q]) => {
+          const d = `M${c.p[p]} L${c.p[q]}`;
+          el("path", { d, stroke: PINK, "stroke-width": 1.2 / s, fill: "none", "stroke-linecap": "round" }, faint);
+          el("path", { d, pathLength: 1, "stroke-dasharray": 1, "stroke-dashoffset": 1, stroke: GOLD, "stroke-width": 2.2 / s, fill: "none", "stroke-linecap": "round", class: "lit-line" }, lit);
+        });
+        c.p.forEach((q) => el("circle", { cx: q[0], cy: q[1], r: 2.2 / s, fill: "#FFFFFF" }, dots));
+        byType[i % 6].push({ lit, dots });
+      }
+
+      // binnenring
+      const inner = $("#wheel-inner");
+      el("circle", { cx, cy, r: 150, fill: "none", stroke: GOLD, "stroke-width": 1, "stroke-dasharray": "2 7" }, inner);
+      el("circle", { cx, cy, r: 100, fill: "none", stroke: GOLD, "stroke-width": 0.6, opacity: 0.6 }, inner);
+      for (let i = 0; i < 8; i++) {
+        const a = (i * 45 * Math.PI) / 180;
+        el("circle", { cx: cx + 150 * Math.cos(a), cy: cy + 150 * Math.sin(a), r: i % 2 ? 2.5 : 4, fill: GOLD }, inner);
+      }
+
+      // glinsteringen op de ring
+      const glints = $("#wheel-glints");
+      const glintSpots = [[-40, 1.2], [70, 4.6], [160, 8.1], [230, 11.4], [310, 14.9], [110, 17.6]];
+      const glintEls = glintSpots.map(([deg]) => {
+        const a = (deg * Math.PI) / 180, x = cx + 300 * Math.cos(a), y = cy + 300 * Math.sin(a);
+        const g = el("g", { opacity: 0 }, glints);
+        el("circle", { cx: x, cy: y, r: 14, fill: "url(#wheel-glint)", opacity: 0.6 }, g);
+        el("path", { d: `M${x} ${y - 16} L${x + 2} ${y - 2} L${x + 16} ${y} L${x + 2} ${y + 2} L${x} ${y + 16} L${x - 2} ${y + 2} L${x - 16} ${y} L${x - 2} ${y - 2}Z`, fill: "#FFFFFF" }, g);
+        return g;
+      });
+
+      // tijdlijn: alles loopt naadloos rond op T = 20 s
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#wheel-outer", { rotation: 0, svgOrigin: "320 320" }, { rotation: 180, svgOrigin: "320 320", duration: T, ease: "none" }, 0);
+      tl.fromTo("#wheel-inner", { rotation: 0, svgOrigin: "320 320" }, { rotation: -90, svgOrigin: "320 320", duration: T, ease: "none" }, 0);
+      tl.fromTo("#wheel-star", { rotation: 0, svgOrigin: "320 320" }, { rotation: 72, svgOrigin: "320 320", duration: T, ease: "none" }, 0);
+      tl.fromTo("#wheel-halo", { scale: 1, svgOrigin: "320 320" }, { scale: 1.08, svgOrigin: "320 320", duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: 7 }, 0);
+      tl.fromTo("#wheel-core", { scale: 1, svgOrigin: "320 320" }, { scale: 1.12, svgOrigin: "320 320", duration: 2.5, ease: "sine.inOut", yoyo: true, repeat: 7 }, 0);
+
+      const periods = [2, 2.5, 4, 5];
+      twinkles.forEach((s, i) => {
+        const half = periods[i % 4] / 2, up = i % 2 === 0;
+        tl.fromTo(s, { opacity: up ? 0.15 : 0.9 }, { opacity: up ? 0.9 : 0.15, duration: half, ease: "sine.inOut", yoyo: true, repeat: Math.round(T / half) - 1 }, 0);
+      });
+
+      const slot = T / 6;
+      byType.forEach((group, k) => {
+        const t0 = k * slot;
+        group.forEach(({ lit, dots }) => {
+          const lines = lit.querySelectorAll(".lit-line");
+          tl.fromTo(lit, { opacity: 1 }, { opacity: 1, duration: 0.01 }, t0);
+          tl.fromTo(lines, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: "power2.inOut", stagger: 0.08 }, t0);
+          tl.fromTo(dots, { opacity: 0.55 }, { opacity: 1, duration: 0.6, ease: "sine.out" }, t0 + 0.3);
+          tl.to(lit, { opacity: 0, duration: 0.9, ease: "sine.in" }, t0 + 2.3);
+          tl.to(dots, { opacity: 0.55, duration: 0.9, ease: "sine.in" }, t0 + 2.3);
+        });
+      });
+
+      glintSpots.forEach(([, t], i) => {
+        tl.fromTo(glintEls[i], { opacity: 0, scale: 0.3, svgOrigin: "320 320" }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, t);
+        tl.to(glintEls[i], { opacity: 0, duration: 0.7, ease: "power2.in" }, t + 0.5);
+      });
+
+      tl.set({}, {}, T);
+      window.__timelines["wheel"] = tl;
+    })();
+  </script>
+</template>

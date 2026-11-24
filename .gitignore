@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+.tools/
+hero-video/.hyperframes/
+hero-video/.thumbnails/
+assets/products/cut-moonology.png
+assets/products/cut-pandora-leo.png
+assets/products/cut-rider-tarot.png
